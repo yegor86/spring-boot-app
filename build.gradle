@@ -20,10 +20,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-devtools'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.postgresql:postgresql'
-	implementation 'org.postgresql:postgresql'
-	// runtimeOnly 'org.postgresql:postgresql'
 	implementation 'commons-io:commons-io:2.11.0'
 	implementation 'org.apache.commons:commons-csv:1.10.0'
+	implementation 'org.slf4j:slf4j-api'
+    implementation 'ch.qos.logback:logback-classic'
 }
 
 test {

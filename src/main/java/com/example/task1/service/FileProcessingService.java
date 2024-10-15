@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +19,15 @@ import com.example.task1.repository.GeoClassRepository;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.StringReader;
 
 @Service
 public class FileProcessingService {
+
+    private static final Logger logger = LoggerFactory.getLogger(FileProcessingService.class);
 
     @Autowired
     private GeoClassRepository geoClassRepository;
@@ -33,7 +36,7 @@ public class FileProcessingService {
     public CompletableFuture<String> processFileAsync(MultipartFile file) {
         try {
 
-            System.out.println("Processing file: " + file.getOriginalFilename());
+            logger.info("Processing file: {}", file.getOriginalFilename());
 
             StringBuilder normilizedData = normilizeData(file.getInputStream());
             CSVParser csvParser = CSVFormat.Builder.create()
@@ -64,7 +67,7 @@ public class FileProcessingService {
             // Simulating long-running task
             Thread.sleep(5000);
 
-            System.out.println("File processing completed: " + file.getOriginalFilename());
+            logger.info("File processing completed: {}", file.getOriginalFilename());
             return CompletableFuture.completedFuture("File processed successfully");
 
         } catch (IOException | InterruptedException e) {
