@@ -1,13 +1,13 @@
-package com.example.springboot;
+package com.example.task1.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class UploadController {
+public class IndexController {
 
-	@GetMapping("/upload")
-	public String upload() {
-		return "Drop files here...";
+	@GetMapping("/")
+	public String index() {
+		return "Landing page";
 	}
 }
