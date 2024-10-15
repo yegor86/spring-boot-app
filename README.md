@@ -26,7 +26,7 @@ The implementation can be found by the link [src/main/java/com/example/task1](sr
     * Spring Data and [a model](https://github.com/yegor86/spring-boot-app/blob/main/src/main/java/com/example/task1/model/GeoClass.java)
 3) Database config and import folder should be configurable, e.g.: json config file
     * [External Postgres DB](https://github.com/yegor86/spring-boot-app/blob/main/src/main/resources/application.properties#L8-L12)
-    * A folder is selected via HTML submit form when opening ttp://localhost:8080/import URL 
+    * A folder is selected via HTML submit form when opening http://localhost:8080/import URL 
 4) Logs should be stored in files
     * [Log configuration](https://github.com/yegor86/spring-boot-app/blob/main/src/main/resources/application.properties#L22-L32)
 
