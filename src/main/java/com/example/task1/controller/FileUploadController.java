@@ -1,6 +1,8 @@
 package com.example.task1.controller;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -17,6 +19,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.task1.service.FileProcessingService;
 
+import org.apache.commons.io.FilenameUtils;
+
+
 @RestController
 public class FileUploadController {
 	
@@ -24,6 +29,11 @@ public class FileUploadController {
 	private FileProcessingService fileProcessingService;
 
 	private ConcurrentHashMap<String, CompletableFuture<String>> fileStatuses;
+
+	private List<String> supportedFormats = Arrays.asList(
+		"csv"
+		// "xslx"
+	);
 	
 	public FileUploadController() {
 		this.fileStatuses = new ConcurrentHashMap<>();
@@ -31,8 +41,11 @@ public class FileUploadController {
 
 	@RequestMapping(value = "/uploadfile", method = RequestMethod.POST)
 	public String submit(@RequestParam("file") MultipartFile file, ModelMap modelMap) {
-		modelMap.addAttribute("file", file);
-        
+		
+		if (!supportedFormats.contains(FilenameUtils.getExtension(file.getOriginalFilename()))) {
+			return "Not supported file format: " + FilenameUtils.getExtension(file.getOriginalFilename());
+		}
+		
 		fileStatuses.put(file.getOriginalFilename(), fileProcessingService.processFileAsync(file));
         return "File " + file.getOriginalFilename() + " upload started, processing in the background.";
 	}
