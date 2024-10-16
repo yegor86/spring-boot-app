@@ -7,9 +7,6 @@ To run the application, run the following command in a terminal window from the 
     or
     ./gradlew bootRun -PmainClass=com.example.task1.Application
 
-    # Task 2
-    ./gradlew bootRun -PmainClass=com.example.task2.Application
-
 ## Test service based app
 Now run the service with curl (in a separate terminal window), by running the following
 command (shown with its output):
