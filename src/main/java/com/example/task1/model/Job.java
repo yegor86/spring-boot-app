@@ -31,6 +31,21 @@ public class Job {
         this.status = "Pending";
     }
 
+    public void start() {
+        this.startTime = Instant.now().toEpochMilli();
+        this.status = "Running";
+    }
+
+    public void end() {
+        this.endTime = Instant.now().toEpochMilli();
+        this.status = "Complete";
+    }
+
+    public void fail() {
+        this.endTime = Instant.now().toEpochMilli();
+        this.status = "Failed";
+    }
+
     public Long getId() {
         return id;
     }
