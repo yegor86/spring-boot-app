@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '3.3.0'
 	id 'java'
 	id 'eclipse'
+	id 'application'
 }
 
 apply plugin: 'io.spring.dependency-management'
@@ -12,6 +13,10 @@ sourceCompatibility = '17'
 
 repositories {
 	mavenCentral()
+}
+
+application {
+    mainClass = rootProject.hasProperty('mainClass') ? rootProject.mainClass : 'com.example.task1.Application'
 }
 
 dependencies {
