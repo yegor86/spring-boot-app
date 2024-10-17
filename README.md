@@ -50,16 +50,21 @@ The implementation can be found by the link [src/main/java/com/example/task1](sr
 5) File should be parsed in asynchronous way, result should be stored in DB
     * Job registraion service register the job, which is proccessed by [ScheduledJobService](src/main/java/com/example/task1/service/ScheduledJobService.java#L23) asynchronously
 6) should have API for getting result of parsed file by Job ID
-    * Job Status API is implemented in [JobRegistrationService](src/main/java/com/example/task1/service/JobRegistrationService.java#L35-L37)
+    * Job Status API is implemented in [RegisterJobController](src/main/java/com/example/task1/controller/RegisterJobController.java#L68-L72)
     
     E.g.:
+    ```
     $ curl http://localhost:8080/api/v1/job/status/4
+    ```
 
 7) should have API for searching results by name, code
 
-    * GeoClass Search API is implemented in [RegiusterJobController]()
+    * GeoClass Search API is implemented in [RegisterJobController](src/main/java/com/example/task1/controller/RegisterJobController.java#L74-L81)
+
     E.g.:
+    ```
     $ curl http://localhost:8080/api/v1/geoclass/search?name=Geo%20Class%201&code=GC2
+    ```
 8) Basic Authorization should be supported (optional)
 9) Page for jobs adding and result view (optional)
 10) Provide junit tests to test the API’s
