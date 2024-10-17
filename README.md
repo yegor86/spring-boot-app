@@ -39,14 +39,27 @@ The implementation can be found by the link [src/main/java/com/example/task1](sr
 1) Small restAPI web-application
     * web app with REST API
 2) all data (except files) should be in JSON format
-    TODO
+    * Job registration API returns retuls in JSON API http://localhost:8080/api/v1/job/register
 3) should have API for adding a job for file parsing (“register-job”)
-    * job registration API /api/v1/job/register
+    * Implemented job registration API /api/v1/job/register
 4) “register-job” should return id of the job
-    * 
+    * Job registration API has the following format 
+    ```json
+    {"jobId":4,"status":"Pending"}
+    ```
 5) File should be parsed in asynchronous way, result should be stored in DB
+    * Job registraion service register the job, which is proccessed by [ScheduledJobService](src/main/java/com/example/task1/service/ScheduledJobService.java#L23) asynchronously
 6) should have API for getting result of parsed file by Job ID
+    * Job Status API is implemented in [JobRegistrationService](src/main/java/com/example/task1/service/JobRegistrationService.java#L35-L37)
+    
+    E.g.:
+    $ curl http://localhost:8080/api/v1/job/status/4
+
 7) should have API for searching results by name, code
+
+    * GeoClass Search API is implemented in [RegiusterJobController]()
+    E.g.:
+    $ curl http://localhost:8080/api/v1/geoclass/search?name=Geo%20Class%201&code=GC2
 8) Basic Authorization should be supported (optional)
 9) Page for jobs adding and result view (optional)
 10) Provide junit tests to test the API’s

@@ -35,4 +35,8 @@ public class JobRegistrationService {
     public List<GeoClass> findGeoClassesByJobId(Long jobId) {
         return geoClassRepository.findGeoClassesByJobId(jobId);
     }
+
+    public List<GeoClass> findGeoClasses(String geoClassName, String geoClassCode) {
+        return geoClassRepository.findByNameAndCode(geoClassName, geoClassCode);
+    }
 }

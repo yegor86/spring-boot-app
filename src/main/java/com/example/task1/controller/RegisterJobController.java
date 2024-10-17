@@ -18,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.task1.model.GeoClass;
 import com.example.task1.model.Job;
 import com.example.task1.model.RegisterJobResult;
-import com.example.task1.service.FileProcessingService;
 import com.example.task1.service.FileSystemStorageService;
 import com.example.task1.service.JobRegistrationService;
 
@@ -70,5 +69,14 @@ public class RegisterJobController {
     public ResponseEntity<List<GeoClass>> checkStatus(@PathVariable Long jobId) {
 		List<GeoClass> geoClasses = jobRegistrationService.findGeoClassesByJobId(jobId);
 		return ResponseEntity.ok(geoClasses);
+    }
+
+	@GetMapping("/geoclass/search")
+    public ResponseEntity<List<GeoClass>> searchGeoClasses(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String code) {
+
+        List<GeoClass> geoClasses = jobRegistrationService.findGeoClasses(name, code);
+        return ResponseEntity.ok(geoClasses);
     }
 }
