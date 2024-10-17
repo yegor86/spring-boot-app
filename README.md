@@ -8,10 +8,11 @@ To run the application, run the following command in a terminal window from the 
 Now run the service with curl (in a separate terminal window), by running the following
 command (shown with its output):
 
-    $ curl http://localhost:8080/
+    $ curl -I http://localhost:8080/
 
 ## Upload CSV file 
 * Open http://localhost:8080/ URL in a web browser
+* Login using default user credentials: `admin/admin`
 * Click on [Task1: Import and process CSV file in async job](http://localhost:8080/import)
 * Browse for a [sample](samples/geoclasses.csv) and then click "Upload File"
 * Track the status of the file being processed under http://localhost:8080/status/{fileName}
@@ -54,7 +55,7 @@ The implementation can be found by the link [src/main/java/com/example/task1](sr
     
     E.g.:
     ```
-    $ curl http://localhost:8080/api/v1/job/status/4
+    $ curl -u admin:admin http://localhost:8080/api/v1/job/status/4
     ```
 
 7) should have API for searching results by name, code
@@ -63,9 +64,10 @@ The implementation can be found by the link [src/main/java/com/example/task1](sr
 
     E.g.:
     ```
-    $ curl http://localhost:8080/api/v1/geoclass/search?name=Geo%20Class%201&code=GC2
+    $ curl -u admin:admin http://localhost:8080/api/v1/geoclass/search?name=Geo%20Class%201&code=GC2
     ```
 8) Basic Authorization should be supported (optional)
+    * Implemented in [SecurityConfig](src/main/java/com/example/task1/service/SecurityConfig.java)
 9) Page for jobs adding and result view (optional)
 10) Provide junit tests to test the API’s
 
