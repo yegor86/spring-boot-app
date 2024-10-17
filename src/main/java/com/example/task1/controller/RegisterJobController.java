@@ -15,16 +15,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.task1.model.GeoClass;
 import com.example.task1.model.Job;
+import com.example.task1.model.RegisterJobResult;
+import com.example.task1.service.FileProcessingService;
 import com.example.task1.service.FileSystemStorageService;
 import com.example.task1.service.JobRegistrationService;
 
 import org.apache.commons.io.FilenameUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 @RestController
 @RequestMapping("/api/v1")
 public class RegisterJobController {
+
+	private static final Logger logger = LoggerFactory.getLogger(RegisterJobController.class);
 	
 	@Autowired
 	private JobRegistrationService jobRegistrationService;
@@ -42,27 +49,26 @@ public class RegisterJobController {
 	}
 
 	@RequestMapping(value = "/job/register", method = RequestMethod.POST)
-	public String submit(@RequestParam("file") MultipartFile file, ModelMap modelMap) {
+	public ResponseEntity<RegisterJobResult> submit(@RequestParam("file") MultipartFile file, ModelMap modelMap) {
 		
 		if (!supportedFormats.contains(FilenameUtils.getExtension(file.getOriginalFilename()))) {
-			return "Not supported file format: " + FilenameUtils.getExtension(file.getOriginalFilename());
+			logger.error("Not supported file format: " + FilenameUtils.getExtension(file.getOriginalFilename()));
+			return ResponseEntity.badRequest().body(new RegisterJobResult(null, "Failed"));
 		}
 		
 		try {
 			String localPath = fileSystemStorageService.saveFile(file);
 			Long jobId = jobRegistrationService.registerJobAndReturnId(new Job(localPath));
-        	return "Job ID: " + jobId;
+			return ResponseEntity.ok(new RegisterJobResult(jobId, "Pending"));
 		} catch (IOException e) {
-			return "Job Registration failed:";
+			logger.error("Register job failed", e);
+			return ResponseEntity.internalServerError().body(new RegisterJobResult(null, "Failed"));
 		}
 	}
 
 	@GetMapping("/job/status/{jobId}")
-    public ResponseEntity<Job> checkStatus(@PathVariable Long jobId) {
-		Job job = jobRegistrationService.findJobByID(jobId);
-		if (job == null) {
-			return ResponseEntity.notFound().build();
-		}
-        return ResponseEntity.ok(job);
+    public ResponseEntity<List<GeoClass>> checkStatus(@PathVariable Long jobId) {
+		List<GeoClass> geoClasses = jobRegistrationService.findGeoClassesByJobId(jobId);
+		return ResponseEntity.ok(geoClasses);
     }
 }

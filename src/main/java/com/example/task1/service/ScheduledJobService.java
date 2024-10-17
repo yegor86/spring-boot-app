@@ -10,10 +10,13 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.List;
+import java.util.ArrayList;
 
 import com.example.task1.model.GeoClass;
 import com.example.task1.model.Job;
+import com.example.task1.model.JobGeoClass;
 import com.example.task1.repository.GeoClassRepository;
+import com.example.task1.repository.JobGeoClassRepository;
 import com.example.task1.repository.JobRepository;
 
 @Component
@@ -21,6 +24,9 @@ public class ScheduledJobService {
     
     @Autowired
     private JobRepository jobRepository;
+
+    @Autowired
+    private JobGeoClassRepository jobGeoClassRepository;
 
     @Autowired
     private GeoClassRepository geoClassRepository;
@@ -43,10 +49,17 @@ public class ScheduledJobService {
         try {
             List<GeoClass> geoClasses = FileProcessingHelper.convertCSVtoDomainObjects(resource.getInputStream());
             
-            // Could be saved within a single transaction to avoid inconsistency    
+            // Should be saved within a single transactional method, i.e. with @Transactional annotatiion to avoid inconsistency    
             job.end();
             geoClassRepository.saveAll(geoClasses);
             jobRepository.save(job);
+
+            List<JobGeoClass> jobGeoClasses = new ArrayList<>();
+            for (GeoClass geoclass: geoClasses) {
+                jobGeoClasses.add(new JobGeoClass(job.getId(), geoclass.getId()));
+            }
+            jobGeoClassRepository.saveAll(jobGeoClasses);
+            
         } catch (IOException e) {
             job.setStatus("Failed");
             jobRepository.save(job);
